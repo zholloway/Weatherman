@@ -8,13 +8,11 @@ using System.Data.SqlClient;
 namespace Weatherman
 {
     class PastWeatherRequest
-    {
-        const string PathToDatabase = @"Server=localhost\SQLEXPRESS;Database=Weathermen;Trusted_Connection=True;";
-
+    {    
         public static void StoreRequest(SqlConnection connection, String userName, WeatherSnapshot snapshot)
         {
-            var query = @"INSERT INTO PastWeatherRequests (UserName, MainTemp, WindSpeed, SysSunset)"
-                        + "Values (@PastWeatherRequests, @MainTemp, @WindSpeed, @SysSunset)";
+            var query = @"INSERT INTO PastWeatherRequests (UserName, MainTemp, WindSpeed, SysSunset) "
+                        + "Values (@UserName, @MainTemp, @WindSpeed, @SysSunset)";
 
             var cmd = new SqlCommand(query, connection);
 
@@ -23,9 +21,7 @@ namespace Weatherman
             cmd.Parameters.AddWithValue("@WindSpeed", snapshot.wind.speed);
             cmd.Parameters.AddWithValue("@SysSunset", snapshot.sys.sunset);
 
-            connection.Open();
             cmd.ExecuteNonQuery();
-            connection.Close();
         }
     }
 }

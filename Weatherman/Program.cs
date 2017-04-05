@@ -12,7 +12,9 @@ using System.Windows;
 namespace Weatherman
 {
     class Program
-    {       
+    {
+        const string PathToDatabase = @"Server=localhost\SQLEXPRESS;Database=Weatherman;Trusted_Connection=True;";
+
         static void Main(string[] args)
         {
             //prompt user for Name and Zip
@@ -46,6 +48,13 @@ namespace Weatherman
             Console.WriteLine($"{userName}, the current temperature is {currentWeather.main.temp}. The wind speed is {currentWeather.wind.speed}. Sunset will be at {currentWeather.sys.sunset}.");
 
             //save userName and currentWeather to database
+            using(var connection = new SqlConnection(PathToDatabase))
+            {
+                connection.Open();
+                PastWeatherRequest.StoreRequest(connection, userName, currentWeather);
+                Console.WriteLine("Your request has been stored. Thank you.");
+                connection.Close();
+            }
 
             Console.ReadLine();
         }
