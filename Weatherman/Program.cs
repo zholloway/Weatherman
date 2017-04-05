@@ -12,7 +12,7 @@ using System.Windows;
 namespace Weatherman
 {
     class Program
-    {
+    {       
         static void Main(string[] args)
         {
             //prompt user for Name and Zip
@@ -22,7 +22,7 @@ namespace Weatherman
             var userZip = Console.ReadLine();
 
             //use userZip for zipcode in API url
-            var url = $"api.openweathermap.org/data/2.5/weather?zip={userZip}&APPID=6e78d983a67bd32414363ec3542cb244";
+            var url = $"http://api.openweathermap.org/data/2.5/weather?zip={userZip}&id=524901&APPID=3f619e1d5e1b959909efda2d7eae4b7e";
             Console.WriteLine(url);
 
             //create the WebRequest using the url
