@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.IO;
-using System.Net;
+using System.Data.SqlClient;
+using System.Windows;
 
 namespace Weatherman
 {
@@ -20,7 +22,7 @@ namespace Weatherman
             var userZip = Console.ReadLine();
 
             //use userZip for zipcode in API url
-            var url = $"api.openweathermap.org/data/2.5/weather?zip={userZip}&APPID=274e4207010e8ea9bc2a679922db5b8d";
+            var url = $"api.openweathermap.org/data/2.5/weather?zip={userZip}&APPID=6e78d983a67bd32414363ec3542cb244";
             Console.WriteLine(url);
 
             //create the WebRequest using the url
@@ -36,6 +38,14 @@ namespace Weatherman
                 rawResponse = reader.ReadToEnd();
                 Console.WriteLine(rawResponse);
             }
+
+            //create new WeatherSnaphot for this request
+            var currentWeather = JsonConvert.DeserializeObject<WeatherSnapshot>(rawResponse);
+
+            //write out the current weather to user
+            Console.WriteLine($"{userName}, the current temperature is {currentWeather.main.temp}. The wind speed is {currentWeather.wind.speed}. Sunset will be at {currentWeather.sys.sunset}.");
+
+            //save userName and currentWeather to database
 
             Console.ReadLine();
         }

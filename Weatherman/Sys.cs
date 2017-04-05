@@ -15,6 +15,6 @@ namespace Weatherman
         public int sunrise { get; set; }
         public int sunset { get; set; }
 
-        public Sys() { };
+        public Sys() { }
     }
 }
