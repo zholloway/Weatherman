@@ -19,7 +19,23 @@ namespace Weatherman
         {
             //prompt user for Name and Zip
             Console.WriteLine("Please enter your name:");
-            var userName = Console.ReadLine();
+            var userName = Console.ReadLine().Trim(' ');
+            //if returning user, display their past requests
+            using (var connection = new SqlConnection(PathToDatabase))
+            {
+                connection.Open();
+                var returnStatus = PastWeatherRequest.CheckForReturningUser(userName, connection);
+                connection.Close();
+
+                if (returnStatus) 
+                {
+                    Console.WriteLine($"Welcome back, {userName}. Your past requests were:");
+                    connection.Open();
+                    PastWeatherRequest.DisplayPastRequests(userName, connection);
+                    connection.Close();
+                }
+            }
+
             Console.WriteLine("Please enter what zip code you would like to know the current weather conditions for:");
             var userZip = Console.ReadLine();
 
@@ -38,7 +54,6 @@ namespace Weatherman
             using(var reader = new StreamReader(response.GetResponseStream()))
             {
                 rawResponse = reader.ReadToEnd();
-                Console.WriteLine(rawResponse);
             }
 
             //create new WeatherSnaphot for this request
