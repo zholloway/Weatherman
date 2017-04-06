@@ -9,10 +9,10 @@ namespace Weatherman
 {
     class PastWeatherRequest
     {    
-        public static void StoreRequest(SqlConnection connection, String userName, WeatherSnapshot snapshot)
+        public static void StoreRequest(SqlConnection connection, String userName, String zipCode,WeatherSnapshot snapshot)
         {
-            var query = @"INSERT INTO PastWeatherRequests (UserName, MainTemp, WindSpeed, SysSunset) "
-                        + "Values (@UserName, @MainTemp, @WindSpeed, @SysSunset)";
+            var query = @"INSERT INTO PastWeatherRequests (UserName, MainTemp, WindSpeed, SysSunset, ZipCode) "
+                        + "Values (@UserName, @MainTemp, @WindSpeed, @SysSunset, @ZipCode)";
 
             var cmd = new SqlCommand(query, connection);
 
@@ -20,6 +20,7 @@ namespace Weatherman
             cmd.Parameters.AddWithValue("@MainTemp", snapshot.main.temp);
             cmd.Parameters.AddWithValue("@WindSpeed", snapshot.wind.speed);
             cmd.Parameters.AddWithValue("@SysSunset", snapshot.sys.sunset);
+            cmd.Parameters.AddWithValue("@ZipCode", zipCode);
 
             cmd.ExecuteNonQuery();
         }

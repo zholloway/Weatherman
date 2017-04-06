@@ -41,7 +41,6 @@ namespace Weatherman
 
             //use userZip for zipcode in API url
             var url = $"http://api.openweathermap.org/data/2.5/weather?zip={userZip}&id=524901&APPID=3f619e1d5e1b959909efda2d7eae4b7e";
-            Console.WriteLine(url);
 
             //create the WebRequest using the url
             var request = WebRequest.Create(url);
@@ -66,7 +65,7 @@ namespace Weatherman
             using(var connection = new SqlConnection(PathToDatabase))
             {
                 connection.Open();
-                PastWeatherRequest.StoreRequest(connection, userName, currentWeather);
+                PastWeatherRequest.StoreRequest(connection, userName, userZip, currentWeather);
                 Console.WriteLine("Your request has been stored. Thank you.");
                 connection.Close();
             }
